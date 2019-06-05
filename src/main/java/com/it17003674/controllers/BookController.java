@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it17003674.BookID;
 import com.it17003674.models.Book;
 import com.it17003674.services.BookService;
 
@@ -30,6 +31,13 @@ public class BookController {
 	public ResponseEntity<Map<String, Object>> addNewBook(@RequestBody Book newBook){
 		
 		return bookService.addBook(newBook.getName(), newBook.getIsbn(), newBook.getAuthor(), newBook.getPrice(), newBook.getYearOfPublication(), newBook.getPublisher());
+	}
+	
+	@RequestMapping(method=RequestMethod.POST, value="/Total")
+	public ResponseEntity<Map<String, Object>> getTotalAmount(@RequestBody BookID bookID){
+		
+		return bookService.getTotalAmount(bookID);
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.GET, value="/{author}")

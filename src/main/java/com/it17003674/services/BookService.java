@@ -3,12 +3,14 @@ package com.it17003674.services;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.it17003674.BookID;
 import com.it17003674.models.Book;
 import com.it17003674.repositories.BookRepository;
 
@@ -31,6 +33,29 @@ public class BookService {
 		response.put("data",  newBook);
 		
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
+	
+	//Method to get the total amount for a set of given book ids
+	public ResponseEntity<Map<String, Object>> getTotalAmount(BookID bookID){
+		
+		double totalAmount = 0;
+		
+		for(String id: bookID.getBookIDList()) {
+			
+			//Get the book details for the id
+			Optional<Book> findBook = bookRepository.findById(id);
+			
+			Book currentBook = findBook.get();
+			
+			totalAmount += currentBook.getPrice();
+			
+		}
+		
+		response.clear();
+		response.put("message",  "Total Price For The Books");
+		response.put("data",  totalAmount);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 	//Method to get all available books
